@@ -1,5 +1,5 @@
-// dobbiamo recuperare la lista utenti da JSON placeholder, una API finta e gratuita
-// che possiamo contattare tramite il metodo fetch()
+// Recuperiamo i libri dalle API di EPICODE https://striveschool-api.herokuapp.com/books
+// inizializzeremo una HTTP REQUEST tramite il metodo fetch()
 // il metodo fetch() inizializza una HTTP REQUEST, da parte nostra (il client)
 // il nostro scopo è ottenere dalle API una RESPONSE, che conterrà l'array di 10
 // utenti, con il quale manipoleremo il DOM e creeremo le cards
@@ -51,15 +51,15 @@ const getUsers = function () {
         // response.ok è false
         // 400, 401, 403, 404, 500 etc.
         // auto-catapultiamoci nel blocco catch
-        throw new Error('La risposta del server non è ok')
+        throw new Error('Qualcosa è andato storto')
         // lanciare un errore a mano serve per "teletrasportarci" nel catch
         // e sostanzialmente gestire gli errori in un blocco solo!
       }
     })
     .then((book) => {
-      console.log('ECCO GLI UTENTI', book)
+      console.log('ECCO I LIBRI', book)
       // qui non c'è pericolo, i dati sono al sicuro!
-      // -ATTENZIONE- è solo QUI che avete users!
+      // -ATTENZIONE- è solo QUI che avete book!
       const bookRow = document.getElementById('book-grid') // <div class="row">
       book.forEach((book) => {
         const newCol = document.createElement('div')
@@ -76,7 +76,7 @@ const getUsers = function () {
                   <p class="card-text">
                     Prezzo: ${book.price}
                   </p>
-                  <button class="btn btn-danger btn-sm" onclick="discardBook(this)">Scarta</button>
+                  <button class="btn btn-danger btn-sm" onclick="removeBook(event)">Scarta</button>
                     <button class="btn btn-primary btn-sm ms-2" onclick="addToCart(${JSON.stringify(
                       book
                     )})">Compra ora</button>
@@ -89,8 +89,14 @@ const getUsers = function () {
     .catch((error) => {
       // siete nel finale "cattive" (Promise rejected)
       // alert('ERRORE NELLA CHIAMATA')
-      console.log(error)
+      console.log('ERROR', error)
     })
 }
 
 getUsers()
+
+const removeBook = function (e) {
+  console.log('Rimuovo libro!', e.target)
+  //   e.target è il bottone
+  e.target.closest('.card').classList.add('d-none')
+}
